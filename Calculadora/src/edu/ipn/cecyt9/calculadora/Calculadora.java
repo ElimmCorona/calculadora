@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.lang.Math.sin;
+import java.math.*;
 
 import javax.swing.JButton;
 import javax.swing.JButton;
@@ -71,8 +73,8 @@ public class Calculadora extends JFrame {
 		panel.add("North", pantalla);
 
 		panelNumeros = new JPanel();
-		panelNumeros.setLayout(new GridLayout(4, 3));
-		panelNumeros.setBorder(new EmptyBorder(4, 4, 4, 4));
+		panelNumeros.setLayout(new GridLayout(6, 5));
+		panelNumeros.setBorder(new EmptyBorder(6, 6, 6, 6));
 
 		for (int n = 9; n >= 0; n--) {
 			nuevoBotonNumerico("" + n);
@@ -83,14 +85,19 @@ public class Calculadora extends JFrame {
 		panel.add("Center", panelNumeros);
 
 		panelOperaciones = new JPanel();
-		panelOperaciones.setLayout(new GridLayout(6, 1));
-		panelOperaciones.setBorder(new EmptyBorder(4, 4, 4, 4));
+		panelOperaciones.setLayout(new GridLayout(8, 2));
+		panelOperaciones.setBorder(new EmptyBorder(6, 6, 6, 6));
 
 		nuevoBotonOperacion("+");
 		nuevoBotonOperacion("-");
 		nuevoBotonOperacion("*");
 		nuevoBotonOperacion("/");
-		nuevoBotonOperacion("=");
+                nuevoBotonOperacion("x^2");
+                nuevoBotonOperacion("sin");
+                nuevoBotonOperacion("cos");
+                nuevoBotonOperacion("tan");
+                nuevoBotonOperacion("x^1/2");
+                nuevoBotonOperacion("=");
 		nuevoBotonOperacion("CE");
 
 		panel.add("East", panelOperaciones);
@@ -162,12 +169,33 @@ public class Calculadora extends JFrame {
 	 * @param tecla
 	 */
 	private void operacionPulsado(String tecla) {
-		if (tecla.equals("=")) {
+            double pantallaNum = new Double(pantalla.getText());
+		 if (tecla.equals("=")) {
 			calcularResultado();
-		} else if (tecla.equals("CE")) {
+		} else  if (tecla.equals("CE")) {
 			resultado = 0;
 			pantalla.setText("");
 			nuevaOperacion = true;
+		} else if (tecla.equals("x^2")) {
+			resultado = Math.pow(pantallaNum, 2);
+                        pantalla.setText("" + resultado);
+                        operacion = "";
+		} else if (tecla.equals("x^1/2")) {
+			resultado = Math.sqrt(pantallaNum);
+                        pantalla.setText("" + resultado);
+                        operacion = "";
+		} else if (tecla.equals("sin")) {
+			resultado = Math.sin(pantallaNum);
+                        pantalla.setText("" + resultado);
+                        operacion = "";
+		} else if (tecla.equals("cos")) {
+			resultado = Math.cos(pantallaNum);
+                        pantalla.setText("" + resultado);
+                        operacion = "";
+		} else if (tecla.equals("tan")) {
+			resultado = Math.tan(pantallaNum);
+                        pantalla.setText("" + resultado);
+                        operacion = "";
 		} else {
 			operacion = tecla;
 			if ((resultado > 0) && !nuevaOperacion) {
@@ -192,9 +220,9 @@ public class Calculadora extends JFrame {
 			resultado /= new Double(pantalla.getText());
 		} else if (operacion.equals("*")) {
 			resultado *= new Double(pantalla.getText());
-		}
-
+                
 		pantalla.setText("" + resultado);
 		operacion = "";
 	}
+}
 }
